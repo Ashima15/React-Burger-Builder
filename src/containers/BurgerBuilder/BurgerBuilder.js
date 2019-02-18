@@ -22,7 +22,8 @@ class BurgerBuilder extends Component {
             "salad": 0
         },
         totalPrice: 4,
-        purchaseable: false
+        purchaseable: false,
+        purchasing: false
     }
 
     updatePurchaseable = (ingredients) => {
@@ -72,16 +73,40 @@ class BurgerBuilder extends Component {
         this.updatePurchaseable(updatedIngredients);
     }
 
+    purchaseHandler = () => {
+        this.setState({
+            purchasing: true
+        })
+    }
+
+    purchaseCancelHandler = () => {
+        this.setState({
+            purchasing: false
+        })
+    }
+
+    purchaseSuccessHandler = () => {
+        alert('You can wait for it to arrive');
+        this.setState({
+            purchasing: false
+        })
+    }
+ 
     render() {
         let disabledInfo = {...this.state.ingredients}
         for(let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
 
+
         return (
             <Aux>
-                <Modal>
-                    <OrderSummary ingredients={this.state.ingredients}></OrderSummary>
+                <Modal show={this.state.purchasing} modalCloseHandler={this.purchaseCancelHandler}>
+                    <OrderSummary 
+                        ingredients={this.state.ingredients}
+                        successBtnHandler = {this.purchaseSuccessHandler}
+                        dangerBtnHandler = {this.purchaseCancelHandler}
+                    ></OrderSummary>
                 </Modal>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls 
@@ -90,6 +115,7 @@ class BurgerBuilder extends Component {
                     disabledInfo={disabledInfo}
                     totalPrice={this.state.totalPrice}
                     purchaseable={this.state.purchaseable}
+                    purchasing={this.purchaseHandler}
                 />
             </Aux>
         )
