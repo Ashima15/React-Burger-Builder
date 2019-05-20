@@ -8,10 +8,6 @@
     box-sizing: border-box;
 }
 
-.contact-form-container input {
-    display: block;
-}
-
 @media(min-width: 600px) {
     .contact-form-container {
         width: 500px;
